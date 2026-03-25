@@ -4,14 +4,17 @@ import type {
   CreateUserInput,
   UpdateUserInput,
 } from "./user.types.js";
+import { ROLES } from '../../utils/constants.js'
 
 export const createUser = async (data: CreateUserInput) => {
   const hashedPassword = await bcrypt.hash(data.password, 10);
 
   return prisma.user.create({
     data: {
-      ...data,
+      name: data.name,
+      email: data.email,
       password: hashedPassword,
+      role: data.role ?? ROLES.DEVELOPER, 
     },
   });
 };
